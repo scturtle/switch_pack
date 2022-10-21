@@ -13,18 +13,18 @@ function check_file -a file
 end
 
 function get_file -a repo pattern
-    set -l ver (curl --silent "https://github.com/$repo/releases" | grep 'releases/tag' |\
+    set -l ver (curl -s "https://github.com/$repo/releases" | grep 'releases/tag' |\
                 string match -rg 'releases/tag/(.*?)"' | sed 's/%2F/-/g' | head -1)
     check_var "$ver" "$repo version not found"
     echo "found $repo version" $ver >&2
 
-    set -l filename (curl --silent "https://github.com/$repo/releases/expanded_assets/$ver" |\
+    set -l filename (curl -s "https://github.com/$repo/releases/expanded_assets/$ver" |\
                      string match -rg "($pattern)" | head -1)
     check_var "$filename" "$repo $ver $pattern not found"
     echo "found $filename" >&2
 
     if not test -e $filename
-       curl -OL "https://github.com/$repo/releases/download/$ver/$filename"
+       curl -s -OL "https://github.com/$repo/releases/download/$ver/$filename"
     end
     echo $filename
 end
@@ -41,6 +41,16 @@ unzip $HEKATE_ZIP -d $pack
 check_status "$HEKATE_ZIP unzip failed"
 check_file "$pack/bootloader"
 mv $pack/hekate_ctcaer_*.bin $pack/payload.bin
+
+# copy sx gears boot files
+cp boot_files/boot.{dat,ini} $pack/
+
+# generate boot.dat from hekate
+# curl -s -L https://gist.githubusercontent.com/CTCaer/13c02c05daec9e674ba00ce5ac35f5be/raw/tx_custom_boot.py |\
+# 	     sed "s/boot_fn = .*/boot_fn = \"$pack\/boot.dat\"/; \
+# 	     s/stage2_fn = .*/stage2_fn = \"$pack\/payload.bin\"/" | python3 -
+# check_file "$pack/boot.dat"
+# echo -e '[payload]\nfile=payload.bin' > $pack/boot.ini
 
 # atmosphere
 set -l ATMOSPHERE_ZIP (get_file 'Atmosphere-NX/Atmosphere' "atmosphere-.*?\.zip")
@@ -71,8 +81,10 @@ get_file 'shchmue/Lockpick_RCM' "Lockpick_RCM\.bin" > /dev/null
 cp Lockpick_RCM.bin $pack/bootloader/payloads/
 check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 
-# boot files
-cp boot_files/boot.{dat,ini} $pack/
+# hwfly-toolbox
+get_file 'hwfly-nx/hwfly-toolbox' "hwfly_toolbox\.bin" > /dev/null
+cp hwfly_toolbox.bin $pack/bootloader/payloads/
+check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
 
 # sigmapatches
 if not test -e sigpatches.zip
@@ -106,18 +118,20 @@ unzip ovlmenu.zip -d $pack
 check_status "ovlmenu.zip unzip failed"
 check_file "$pack/switch/.overlays/ovlmenu.ovl"
 
-# EdiZon
-get_file 'WerWolv/EdiZon' 'EdiZon\.nro' > /dev/null
+# ovlEdiZon
 get_file 'WerWolv/EdiZon' 'ovlEdiZon\.ovl' > /dev/null
 mkdir -p $pack/switch/EdiZon
-cp EdiZon.nro $pack/switch/EdiZon/
 cp ovlEdiZon.ovl $pack/switch/.overlays/
-check_file "$pack/switch/EdiZon/EdiZon.nro"
 check_file "$pack/switch/.overlays/ovlEdiZon.ovl"
 
-# breeze
+# EdiZon SE
+get_file 'tomvita/EdiZon-SE' 'EdiZon\.zip' > /dev/null
+unzip EdiZon.zip -d $pack
+check_file "$pack/switch/EdiZon/EdiZon.nro"
+
+# Breeze
 get_file 'tomvita/Breeze-Beta' 'Breeze\.zip' > /dev/null
-unzip Breeze.zip -d $pack
+unzip -o Breeze.zip -d $pack
 check_status "Breeze.zip unzip failed"
 check_file "$pack/switch/breeze/Breeze.nro"
 
