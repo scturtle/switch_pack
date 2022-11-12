@@ -119,9 +119,8 @@ check_status "ovlmenu.zip unzip failed"
 check_file "$pack/switch/.overlays/ovlmenu.ovl"
 
 # ovlEdiZon
-get_file 'WerWolv/EdiZon' 'ovlEdiZon\.ovl' > /dev/null
-mkdir -p $pack/switch/EdiZon
-cp ovlEdiZon.ovl $pack/switch/.overlays/
+get_file 'proferabg/EdiZon-Overlay' 'EdiZon-Overlay\.zip' > /dev/null
+unzip EdiZon-Overlay.zip -d $pack
 check_file "$pack/switch/.overlays/ovlEdiZon.ovl"
 
 # EdiZon SE
