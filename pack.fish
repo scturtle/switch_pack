@@ -58,6 +58,11 @@ unzip $ATMOSPHERE_ZIP -d $pack
 check_status "$ATMOSPHERE_ZIP unzip failed"
 check_file "$pack/atmosphere"
 
+# block dns
+mkdir -p $pack/atmosphere/hosts
+curl -L https://nh-server.github.io/switch-guide/files/emummc.txt -o $pack/atmosphere/hosts/emummc.txt
+check_file "$pack/atmosphere/hosts/emummc.txt"
+
 # fusee.bin
 get_file 'Atmosphere-NX/Atmosphere' "fusee\.bin"
 cp fusee.bin $pack/bootloader/payloads/
