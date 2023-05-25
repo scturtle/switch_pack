@@ -7,5 +7,5 @@ A script that allows you to create a pack of CFW(custom firmware) for your Ninte
 * Atmosphère, Hekate
 * DBI, nx-shell
 * EdiZon SE, Breeze
-* nx-ovlloader, tesla-menu, ovlEdiZon, Status-Monitor-Overlay
+* nx-ovlloader, tesla-menu, ovlEdiZon, Status-Monitor-Overlay, emuiibo
 * (add your own in the script)

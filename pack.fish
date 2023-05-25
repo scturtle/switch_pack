@@ -82,14 +82,17 @@ cp hekate_resources/{sysnand,emummc}.bmp $pack/bootloader/res/
 cp hekate_resources/hekate_ipl.ini $pack/bootloader/
 
 # lockpick_RCM
-get_file 'shchmue/Lockpick_RCM' "Lockpick_RCM\.bin" > /dev/null
-cp Lockpick_RCM.bin $pack/bootloader/payloads/
+# get_file 'shchmue/Lockpick_RCM' "Lockpick_RCM\.bin" > /dev/null
+# cp Lockpick_RCM.bin $pack/bootloader/payloads/
+# check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
+curl -s -L https://git.disroot.org/Lockpick/Binaries/raw/branch/main/Lockpick_RCM.bin \
+     -o $pack/bootloader/payloads/Lockpick_RCM.bin
 check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 
 # hwfly-toolbox
-get_file 'hwfly-nx/hwfly-toolbox' "hwfly_toolbox\.bin" > /dev/null
-cp hwfly_toolbox.bin $pack/bootloader/payloads/
-check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
+# get_file 'hwfly-nx/hwfly-toolbox' "hwfly_toolbox\.bin" > /dev/null
+# cp hwfly_toolbox.bin $pack/bootloader/payloads/
+# check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
 
 # sigmapatches
 if not test -e sigpatches.zip
@@ -143,3 +146,17 @@ check_file "$pack/switch/breeze/Breeze.nro"
 get_file 'masagrator/Status-Monitor-Overlay' 'Status-Monitor-Overlay\.ovl' > /dev/null
 cp Status-Monitor-Overlay.ovl $pack/switch/.overlays/
 check_file "$pack/switch/.overlays/Status-Monitor-Overlay.ovl"
+
+# linkalho
+set -l LINKALHO_ZIP (get_file 'rdmrocha/linkalho' "linkalho-.*?\.zip")
+unzip -o $LINKALHO_ZIP -d $pack/switch/
+check_status "$LINKALHO_ZIP unzip failed"
+check_file "$pack/switch/linkalho.nro"
+
+# emuiibo
+get_file 'XorTroll/emuiibo' 'emuiibo\.zip' > /dev/null
+unzip -o emuiibo.zip -d .
+check_file "SdOut"
+cp -r SdOut/* $pack/
+rm -r SdOut
+check_file "$pack/switch/.overlays/emuiibo.ovl"
