@@ -37,7 +37,7 @@ end
 
 # hekate
 set -l HEKATE_ZIP (get_file 'CTCaer/hekate' "hekate_.*?\.zip")
-unzip $HEKATE_ZIP -d $pack
+unzip -q $HEKATE_ZIP -d $pack
 check_status "$HEKATE_ZIP unzip failed"
 check_file "$pack/bootloader"
 mv $pack/hekate_ctcaer_*.bin $pack/payload.bin
@@ -54,13 +54,13 @@ cp boot_files/boot.{dat,ini} $pack/
 
 # atmosphere
 set -l ATMOSPHERE_ZIP (get_file 'Atmosphere-NX/Atmosphere' "atmosphere-.*?\.zip")
-unzip $ATMOSPHERE_ZIP -d $pack
+unzip -q $ATMOSPHERE_ZIP -d $pack
 check_status "$ATMOSPHERE_ZIP unzip failed"
 check_file "$pack/atmosphere"
 
 # block dns
 mkdir -p $pack/atmosphere/hosts
-curl -L https://nh-server.github.io/switch-guide/files/emummc.txt -o $pack/atmosphere/hosts/emummc.txt
+curl -s -L https://nh-server.github.io/switch-guide/files/emummc.txt -o $pack/atmosphere/hosts/emummc.txt
 check_file "$pack/atmosphere/hosts/emummc.txt"
 
 # fusee.bin
@@ -74,7 +74,8 @@ cat $pack/atmosphere/config_templates/exosphere.ini |\
     > $pack/exosphere.ini
 cat $pack/atmosphere/config_templates/system_settings.ini |\
     sed 's/; \(usb30_force_enabled\).*/\\1 = u8!0x1/;
-         s/; \(dmnt_cheats_enabled_by_default\).*/\\1 = u8!0x0/; s/\r//' \
+         s/; \(dmnt_cheats_enabled_by_default\).*/\\1 = u8!0x0/; s/\r//' |\
+    sed 's/\(\[atmosphere\]\)/\\1\nenable_standalone_gdbstub = u8!0x1/' \
     > $pack/atmosphere/config/system_settings.ini
 
 # hekate stuffs
@@ -95,10 +96,8 @@ check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 # check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
 
 # sigmapatches
-if not test -e sigpatches.zip
-    curl -OL https://sigmapatches.coomer.party/sigpatches.zip
-end
-unzip sigpatches.zip -d $pack
+curl -s -OL https://sigmapatches.coomer.party/sigpatches.zip
+unzip -q sigpatches.zip -d $pack
 check_status "sigpatches.zip unzip failed"
 check_file "$pack/bootloader/patches.ini"
 
@@ -116,29 +115,29 @@ check_file "$pack/switch/NX-Shell.nro"
 
 # nx-ovlloader
 get_file 'WerWolv/nx-ovlloader' 'nx-ovlloader\.zip' > /dev/null
-unzip nx-ovlloader.zip -d $pack
+unzip -q nx-ovlloader.zip -d $pack
 check_status "nx-ovlloader.zip unzip failed"
 check_file "$pack/atmosphere/contents/420000000007E51A"
 
 # tesla-menu
 get_file 'WerWolv/Tesla-Menu' 'ovlmenu\.zip' > /dev/null
-unzip ovlmenu.zip -d $pack
+unzip -q ovlmenu.zip -d $pack
 check_status "ovlmenu.zip unzip failed"
 check_file "$pack/switch/.overlays/ovlmenu.ovl"
 
 # ovlEdiZon
 get_file 'proferabg/EdiZon-Overlay' 'EdiZon-Overlay\.zip' > /dev/null
-unzip EdiZon-Overlay.zip -d $pack
+unzip -q EdiZon-Overlay.zip -d $pack
 check_file "$pack/switch/.overlays/ovlEdiZon.ovl"
 
 # EdiZon SE
 get_file 'tomvita/EdiZon-SE' 'EdiZon\.zip' > /dev/null
-unzip EdiZon.zip -d $pack
+unzip -q EdiZon.zip -d $pack
 check_file "$pack/switch/EdiZon/EdiZon.nro"
 
 # Breeze
 get_file 'tomvita/Breeze-Beta' 'Breeze\.zip' > /dev/null
-unzip -o Breeze.zip -d $pack
+unzip -q -o Breeze.zip -d $pack
 check_status "Breeze.zip unzip failed"
 check_file "$pack/switch/breeze/Breeze.nro"
 
@@ -149,13 +148,13 @@ check_file "$pack/switch/.overlays/Status-Monitor-Overlay.ovl"
 
 # linkalho
 set -l LINKALHO_ZIP (get_file 'rdmrocha/linkalho' "linkalho-.*?\.zip")
-unzip -o $LINKALHO_ZIP -d $pack/switch/
+unzip -q -o $LINKALHO_ZIP -d $pack/switch/
 check_status "$LINKALHO_ZIP unzip failed"
 check_file "$pack/switch/linkalho.nro"
 
 # emuiibo
 get_file 'XorTroll/emuiibo' 'emuiibo\.zip' > /dev/null
-unzip -o emuiibo.zip -d .
+unzip -q -o emuiibo.zip -d .
 check_file "SdOut"
 cp -r SdOut/* $pack/
 rm -r SdOut
