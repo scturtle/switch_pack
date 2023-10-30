@@ -83,10 +83,7 @@ cp hekate_resources/{sysnand,emummc}.bmp $pack/bootloader/res/
 cp hekate_resources/hekate_ipl.ini $pack/bootloader/
 
 # lockpick_RCM
-# get_file 'shchmue/Lockpick_RCM' "Lockpick_RCM\.bin" > /dev/null
-# cp Lockpick_RCM.bin $pack/bootloader/payloads/
-# check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
-curl -s -L https://git.disroot.org/Lockpick/Binaries/raw/branch/main/Lockpick_RCM.bin \
+curl -s -L https://vps.suchmeme.nl/git/mudkip/Lockpick_RCM/releases/download/v1.9.11/Lockpick_RCM.bin \
      -o $pack/bootloader/payloads/Lockpick_RCM.bin
 check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 
