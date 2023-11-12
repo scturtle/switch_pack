@@ -64,7 +64,7 @@ curl -s -L https://nh-server.github.io/switch-guide/files/emummc.txt -o $pack/at
 check_file "$pack/atmosphere/hosts/emummc.txt"
 
 # fusee.bin
-get_file 'Atmosphere-NX/Atmosphere' "fusee\.bin"
+get_file 'Atmosphere-NX/Atmosphere' "fusee\.bin" > /dev/null
 cp fusee.bin $pack/bootloader/payloads/
 check_file "$pack/bootloader/payloads/fusee.bin"
 
@@ -139,8 +139,8 @@ check_status "Breeze.zip unzip failed"
 check_file "$pack/switch/breeze/Breeze.nro"
 
 # Status-Monitor-Overlay
-get_file 'masagrator/Status-Monitor-Overlay' 'Status-Monitor-Overlay\.ovl' > /dev/null
-cp Status-Monitor-Overlay.ovl $pack/switch/.overlays/
+get_file 'masagrator/Status-Monitor-Overlay' 'Status-Monitor-Overlay\.zip' > /dev/null
+unzip -q -o Status-Monitor-Overlay.zip -d $pack
 check_file "$pack/switch/.overlays/Status-Monitor-Overlay.ovl"
 
 # linkalho
