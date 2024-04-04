@@ -83,8 +83,10 @@ cp hekate_resources/{sysnand,emummc}.bmp $pack/bootloader/res/
 cp hekate_resources/hekate_ipl.ini $pack/bootloader/
 
 # lockpick_RCM
-curl -s -L https://vps.suchmeme.nl/git/mudkip/Lockpick_RCM/releases/download/v1.9.11/Lockpick_RCM.bin \
-     -o $pack/bootloader/payloads/Lockpick_RCM.bin
+curl -s -L https://sigmapatches.su/Lockpick_RCM_v1.9.12.zip \
+     -o Lockpick_RCM.zip
+check_status "download Lockpick_RCM.zip failed"
+unzip -q Lockpick_RCM.zip -d $pack/bootloader/payloads/ Lockpick_RCM.bin
 check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 
 # hwfly-toolbox
@@ -93,10 +95,18 @@ check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 # check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
 
 # sigmapatches
-curl -s -OL https://sigmapatches.coomer.party/sigpatches.zip
+curl -s -OL https://sigmapatches.su/sigpatches.zip
+check_status "download sigpatches.zip failed"
 unzip -q sigpatches.zip -d $pack
 check_status "sigpatches.zip unzip failed"
 check_file "$pack/bootloader/patches.ini"
+
+# sys-patch
+# curl -s -OL https://sigmapatches.su/sys-patch.zip
+# check_status "download sys-patch failed"
+# unzip -q sys-patch.zip -d $pack
+# check_status "sys-patch.zip unzip failed"
+# check_file "$pack/atmosphere/contents/420000000000000B/exefs.nsp"
 
 # DBI
 get_file 'rashevskyv/dbi' 'DBI\.nro' > /dev/null
@@ -144,15 +154,15 @@ unzip -q -o Status-Monitor-Overlay.zip -d $pack
 check_file "$pack/switch/.overlays/Status-Monitor-Overlay.ovl"
 
 # linkalho
-set -l LINKALHO_ZIP (get_file 'rdmrocha/linkalho' "linkalho-.*?\.zip")
-unzip -q -o $LINKALHO_ZIP -d $pack/switch/
-check_status "$LINKALHO_ZIP unzip failed"
-check_file "$pack/switch/linkalho.nro"
+# set -l LINKALHO_ZIP (get_file 'rdmrocha/linkalho' "linkalho-.*?\.zip")
+# unzip -q -o $LINKALHO_ZIP -d $pack/switch/
+# check_status "$LINKALHO_ZIP unzip failed"
+# check_file "$pack/switch/linkalho.nro"
 
 # emuiibo
-get_file 'XorTroll/emuiibo' 'emuiibo\.zip' > /dev/null
-unzip -q -o emuiibo.zip -d .
-check_file "SdOut"
-cp -r SdOut/* $pack/
-rm -r SdOut
-check_file "$pack/switch/.overlays/emuiibo.ovl"
+# get_file 'XorTroll/emuiibo' 'emuiibo\.zip' > /dev/null
+# unzip -q -o emuiibo.zip -d .
+# check_file "SdOut"
+# cp -r SdOut/* $pack/
+# rm -r SdOut
+# check_file "$pack/switch/.overlays/emuiibo.ovl"
