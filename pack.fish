@@ -95,18 +95,19 @@ check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 # check_file "$pack/bootloader/payloads/hwfly_toolbox.bin"
 
 # sigmapatches
-curl -s -OL https://sigmapatches.su/sigpatches.zip
-check_status "download sigpatches.zip failed"
-unzip -q sigpatches.zip -d $pack
-check_status "sigpatches.zip unzip failed"
-check_file "$pack/bootloader/patches.ini"
+# curl -s -OL https://sigmapatches.su/sigpatches.zip
+# check_status "download sigpatches.zip failed"
+# unzip -q sigpatches.zip -d $pack
+# check_status "sigpatches.zip unzip failed"
+# check_file "$pack/bootloader/patches.ini"
 
 # sys-patch
 # curl -s -OL https://sigmapatches.su/sys-patch.zip
 # check_status "download sys-patch failed"
-# unzip -q sys-patch.zip -d $pack
-# check_status "sys-patch.zip unzip failed"
-# check_file "$pack/atmosphere/contents/420000000000000B/exefs.nsp"
+check_file "sys-patch.zip"
+unzip -q sys-patch.zip -d $pack
+check_status "sys-patch.zip unzip failed"
+check_file "$pack/atmosphere/contents/420000000000000B/exefs.nsp"
 
 # DBI
 get_file 'rashevskyv/dbi' 'DBI\.nro' > /dev/null
