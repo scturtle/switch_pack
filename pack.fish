@@ -43,7 +43,7 @@ check_file "$pack/bootloader"
 mv $pack/hekate_ctcaer_*.bin $pack/payload.bin
 
 # copy sx gears boot files
-cp boot_files/boot.{dat,ini} $pack/
+# cp boot_files/boot.{dat,ini} $pack/
 
 # generate boot.dat from hekate
 # curl -s -L https://gist.githubusercontent.com/CTCaer/13c02c05daec9e674ba00ce5ac35f5be/raw/tx_custom_boot.py |\
@@ -64,9 +64,9 @@ curl -s -L https://nh-server.github.io/switch-guide/files/emummc.txt -o $pack/at
 check_file "$pack/atmosphere/hosts/emummc.txt"
 
 # fusee.bin
-get_file 'Atmosphere-NX/Atmosphere' "fusee\.bin" > /dev/null
-cp fusee.bin $pack/bootloader/payloads/
-check_file "$pack/bootloader/payloads/fusee.bin"
+# get_file 'Atmosphere-NX/Atmosphere' "fusee\.bin" > /dev/null
+# cp fusee.bin $pack/bootloader/payloads/
+# check_file "$pack/bootloader/payloads/fusee.bin"
 
 # atmosphere configs
 cat $pack/atmosphere/config_templates/exosphere.ini |\
@@ -102,11 +102,12 @@ check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 # check_file "$pack/bootloader/patches.ini"
 
 # sys-patch
-# curl -s -OL https://sigmapatches.su/sys-patch.zip
-# check_status "download sys-patch failed"
-check_file "sys-patch.zip"
+set -l SYSPATCH_ZIP (get_file 'impeeza/sys-patch' "sys-patch-.*?\.zip")
+check_status "download sys-patch failed"
+unzip -q $SYSPATCH_ZIP -d .
+check_file sys-patch.zip
 unzip -q sys-patch.zip -d $pack
-check_status "sys-patch.zip unzip failed"
+check_status "sys-patch unzip failed"
 check_file "$pack/atmosphere/contents/420000000000000B/exefs.nsp"
 
 # DBI
