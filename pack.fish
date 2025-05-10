@@ -82,12 +82,12 @@ cat $pack/atmosphere/config_templates/system_settings.ini |\
 cp hekate_resources/{sysnand,emummc}.bmp $pack/bootloader/res/
 cp hekate_resources/hekate_ipl.ini $pack/bootloader/
 
-# lockpick_RCM
-curl -s -L https://sigmapatches.su/Lockpick_RCM_v1.9.12.zip \
-     -o Lockpick_RCM.zip
-check_status "download Lockpick_RCM.zip failed"
-unzip -q Lockpick_RCM.zip -d $pack/bootloader/payloads/ Lockpick_RCM.bin
-check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
+# FIXME: lockpick_RCM
+# curl -s -L https://sigmapatches.su/Lockpick_RCM_v1.9.12.zip \
+#      -o Lockpick_RCM.zip
+# check_status "download Lockpick_RCM.zip failed"
+# unzip -q Lockpick_RCM.zip -d $pack/bootloader/payloads/ Lockpick_RCM.bin
+# check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 
 # hwfly-toolbox
 # get_file 'hwfly-nx/hwfly-toolbox' "hwfly_toolbox\.bin" > /dev/null
@@ -102,7 +102,7 @@ check_file "$pack/bootloader/payloads/Lockpick_RCM.bin"
 # check_file "$pack/bootloader/patches.ini"
 
 # sys-patch
-set -l SYSPATCH_ZIP (get_file 'impeeza/sys-patch' "sys-patch-.*?\.zip")
+set -l SYSPATCH_ZIP (get_file 'impeeza/sys-patch' "sys-patch\.zip")
 check_status "download sys-patch failed"
 unzip -q $SYSPATCH_ZIP -d .
 check_file sys-patch.zip
@@ -110,12 +110,12 @@ unzip -q sys-patch.zip -d $pack
 check_status "sys-patch unzip failed"
 check_file "$pack/atmosphere/contents/420000000000000B/exefs.nsp"
 
-# DBI
-get_file 'rashevskyv/dbi' 'DBI\.nro' > /dev/null
-get_file 'rashevskyv/dbi' 'dbi\.config' > /dev/null
-mkdir -p $pack/switch/DBI
-cp {DBI.nro,dbi.config} $pack/switch/DBI/
-check_file "$pack/switch/DBI/DBI.nro"
+# DBI TODO: scturtle/NBI
+# get_file 'rashevskyv/dbi' 'DBI\.nro' > /dev/null
+# get_file 'rashevskyv/dbi' 'dbi\.config' > /dev/null
+# mkdir -p $pack/switch/DBI
+# cp {DBI.nro,dbi.config} $pack/switch/DBI/
+# check_file "$pack/switch/DBI/DBI.nro"
 
 # nx-shell
 get_file 'joel16/NX-Shell' 'NX-Shell\.nro' > /dev/null
